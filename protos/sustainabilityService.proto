@@ -1,0 +1,154 @@
+syntax = "proto3";
+
+option go_package = "genproto/SustainabilityService";
+
+package SustainabilityService;
+
+/*
+- 1 POST /api/impact/log
+- 2 GET /api/users/{id}/impact
+- 3`GET /api/communities/{id}/impact
+- 4`GET /api/challenges
+- 5`POST /api/challenges/{id}/join
+- 6`PUT /api/challenges/{id}/progress
+- 7`GET /api/users/{id}/challenges
+- 8`GET /api/leaderboard/users
+- 9`GET /api/leaderboard/communities
+*/
+
+service SustainabilityService {
+    // 1
+    rpc LogImpact(LogImpactRequest) returns (LogImpactResponse);
+    // 2
+    rpc GetUserImpact(GetUserImpactRequest) returns (GetUserImpactResponse);
+    // 3
+    rpc GetCommunityImpact(GetCommunityImpactRequest) returns (GetCommunityImpactResponse);
+    // 4
+    rpc GetChallenges(GetChallengesRequest) returns (GetChallengesResponse);
+    // 5
+    rpc JoinChallenge(JoinChallengeRequest) returns (JoinChallengeResponse);
+    // 6
+    rpc UpdateChallengeProgress(UpdateChallengeProgressRequest) returns (UpdateChallengeProgressResponse);
+    // 7
+    rpc GetUserChallenges(GetUserChallengesRequest) returns (GetUserChallengesResponse);
+    // 8
+    rpc GetUserLeaderboard(GetUserLeaderboardRequest) returns (GetUserLeaderboardResponse);
+    // 9
+    rpc GetCommunityLeaderboard(GetCommunityLeaderboardRequest) returns (GetCommunityLeaderboardResponse);
+    // 10
+    rpc PostChallenges(PostChallengesRequest) returns (PostChallengesResponse);
+}
+// 1
+message LogImpactRequest{
+    string user_id = 1;
+    string community_id = 2;
+    string category = 3;
+    float amount = 4;
+    string unit = 5;
+}
+message LogImpactResponse{
+    string id = 1;
+    string user_id = 2;
+    string community_id = 3;
+    string category = 4;
+    float amount = 5;
+    string unit = 6;
+    string logged_at = 7;
+}
+// 2
+message GetUserImpactRequest{
+    string user_id = 1;
+}
+message GetUserImpactResponse{
+    repeated LogImpactResponse impacts = 1;
+}
+// 3
+message GetCommunityImpactRequest{
+    string community_id = 1;
+}
+message GetCommunityImpactResponse{
+    repeated LogImpactResponse impacts = 1;
+}
+// 4
+message GetChallengesRequest{
+}
+message GetChallengesResponse{
+    repeated PostChallengesResponse challenges = 1;
+}
+// 5
+message JoinChallengeRequest{
+    string user_id = 1;
+    string community_id = 2;
+    string challenge_id = 3;
+    float progres = 4;
+    string completed_at = 5;
+}
+message JoinChallengeResponse{
+    string user_id = 1;
+    string community_id = 2;
+    string challenge_id = 3;
+    float progres = 4;
+    string completed_at = 5;
+}
+// 6
+message UpdateChallengeProgressRequest{
+    string user_id = 1;
+    string community_id = 2;
+    string challenge_id = 3;
+    float progres = 4;
+    string completed_at = 5;
+}
+message UpdateChallengeProgressResponse{
+    string user_id = 1;
+    string community_id = 2;
+    string challenge_id = 3;
+    float progres = 4;
+    string completed_at = 5;
+}
+// 7
+message GetUserChallengesRequest{
+    string user_id = 1;
+}
+message GetUserChallengesResponse{
+    repeated JoinChallengeResponse challenges = 1;
+}
+// 8
+message GetUserLeaderboardRequest{
+}
+message GetUserLeaderboardResponse{
+    repeated LeaderboardUser leaderboard = 1;
+}
+// 9
+message GetCommunityLeaderboardRequest{
+}
+message GetCommunityLeaderboardResponse{
+    repeated LeaderboardCommunity leaderboard = 1;
+}
+// 10
+message PostChallengesRequest{
+    string title = 1;
+    string description = 2;
+    float goal_amount = 3;
+    string goal_unit = 4;
+    string start_date = 5;
+    string end_date = 6;
+}
+message PostChallengesResponse{
+    string id = 1;
+    string title = 2;
+    string description = 3;
+    float goal_amount = 4;
+    string goal_unit = 5;
+    string start_date = 6;
+    string end_date = 7;
+}
+// Leaderboard
+message LeaderboardUser{   
+    string user_id = 1;
+    string community_id = 2;
+    float progres = 3;
+}
+message LeaderboardCommunity{
+    string community_id = 2;
+    float progres = 3;
+}
